@@ -1,8 +1,8 @@
 # minikube_nginx
 # 1. Кластер
-1. Для выполнения задания использую удаленый сервер. 
-apt update
-apt install git
+Для выполнения задания использую удаленый сервер. /
+apt update /
+apt install git /
 - Установка minikube:
 apt install docker.io
 curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
@@ -28,6 +28,7 @@ helm install ingress-nginx ingress-nginx/ingress-nginx
 5. Настрой Ingress (nginx-ingress.yaml) для маршрутизации запросов на бэкенд (хост: hello.local).
 
 server: git pull
+
 Применение всех созданных манифестов:
 kubectl apply -f nginx-html-configmap.yaml
 kubectl apply -f nginx-backend-deployment.yaml
@@ -38,3 +39,13 @@ kubectl apply -f nginx-ingress.yaml
 
 minikube tunnel
 
+вывод:
+
+
+# 4. Логи и отладка
+
+kubectl get pods
+
+kubcetl logs <name pod>
+
+kubectl get ingress

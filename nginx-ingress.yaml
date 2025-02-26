@@ -2,11 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx-ingress
-  namespace: ingress-nginx
+  namespace: ingress-nginx 
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx  
+  ingressClassName: nginx
   rules:
   - host: hello.local
     http:
@@ -15,6 +15,5 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: nginx-backend.default.svc.cluster.local
-            port:
+            name: nginx-backend.default.svc.cluster.local  
               number: 80

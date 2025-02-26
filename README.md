@@ -1,15 +1,14 @@
 # minikube_nginx
 # 1. Кластер
-Для выполнения задания использую удаленый сервер. /
-apt update /
-apt install git /
+Для выполнения задания использую удаленый сервер 4CPU/4RAM/20gb. 
+apt update 
+apt install git 
 - Установка minikube:
 apt install docker.io
 curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 minikube start --force
-- Установка kubectl:
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+minikube kubectl -- get pods -A
 # 2. Манифесты 
 Локально создаю необходимые файлы в vs code и push их в git, чтобы взять их на удаленом сервере для развертывания. 
 1. Установка helm: 
@@ -28,6 +27,10 @@ helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx
 Добавляем запись в /etc/hosts
 echo "$(minikube ip) hello.local" | sudo tee -a /etc/hosts
 5. Настрой Ingress (nginx-ingress.yaml) для маршрутизации запросов на бэкенд (хост: hello.local).
+Включение ingress
+minikube addons enable ingress
+Перезапуск minikube: minikube stop && minikube start --force
+
 
 server: git pull
 

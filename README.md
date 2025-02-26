@@ -32,7 +32,10 @@ echo "$(minikube ip) hello.local" | sudo tee -a /etc/hosts
 5. Настрой Ingress (nginx-ingress.yaml) для маршрутизации запросов на бэкенд (хост: hello.local).
 Включение ingress
 minikube addons enable ingress
-Перезапуск minikube: minikube stop && minikube start --force
+ClusterRoleBinding дает сервис-аккаунту ingress-nginx полный доступ (cluster-admin), чтобы он мог управлять ConfigMap, Service и Secret.
+kubectl create clusterrolebinding ingress-nginx \
+  --clusterrole=cluster-admin \
+  --serviceaccount=default:ingress-nginx
 
 
 server: git pull
@@ -49,18 +52,18 @@ minikube tunnel
 
 kubectl patch svc ingress-nginx-controller -n default -p '{"spec": {"externalIPs": ["192.168.49.2"]}}'
 
-
 # 4. Логи и отладка
 
-kubectl get pods
+kubectl get pods -n default
 
 kubcetl logs <name pod>
 
-kubectl get ingress
+kubectl logs -l app.kubernetes.io/name=ingress-nginx -n default
+
+kubectl get clusterrolebinding ingress-nginx -o yaml
 
 kubectl get svc -A
 
 kubectl get svc nginx-backend //проверка, что сервис работает
 
-curl http://hello.local
-sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+curl -v http://hello.local

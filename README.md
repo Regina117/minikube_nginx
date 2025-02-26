@@ -17,7 +17,7 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 2. Установка Ingress Nginx:
-helm install ingress-nginx ingress-nginx/ingress-nginx
+helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
 3. Создание Deployment для nginx-default-backend (nginx-backend-deployment.yaml) с 1 репликой 
 (используй образ nginx или официальный k8s.gcr.io/defaultbackend).
 Настройка Service типа ClusterIP для nginx-default-backend (nginx-backend-service.yaml).
@@ -25,6 +25,8 @@ helm install ingress-nginx ingress-nginx/ingress-nginx
 4. Создание ConfigMap(nginx-html-configmap.yaml), содержащий файл index.html с текстом "Hello, Kubernetes!".
 Подключение ConfigMap к nginx-default-backend через volume (nginx-html-config), чтобы он отображал
 этот index.html.
+Добавляем запись в /etc/hosts
+echo "$(minikube ip) hello.local" | sudo tee -a /etc/hosts
 5. Настрой Ingress (nginx-ingress.yaml) для маршрутизации запросов на бэкенд (хост: hello.local).
 
 server: git pull
@@ -49,3 +51,5 @@ kubectl get pods
 kubcetl logs <name pod>
 
 kubectl get ingress
+
+kubectl get svc nginx-backend //проверка, что сервис работает
